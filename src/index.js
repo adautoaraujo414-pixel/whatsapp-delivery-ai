@@ -1,18 +1,41 @@
-const express = require("express");
-const qrcode = require("qrcode-terminal");
-const { Client, LocalAuth } = require("whatsapp-web.js");
+// ===============================
+// IMPORTS (ES MODULE)
+// ===============================
+import express from "express";
+import qrcode from "qrcode-terminal";
+import pkg from "whatsapp-web.js";
 
+const { Client, LocalAuth } = pkg;
+
+// ===============================
+// EXPRESS (OBRIGATÓRIO NO RAILWAY)
+// ===============================
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// WhatsApp Client
+// ===============================
+// WHATSAPP CLIENT
+// ===============================
 const client = new Client({
   authStrategy: new LocalAuth(),
   puppeteer: {
-    args: ["--no-sandbox", "--disable-setuid-sandbox"]
+    headless: true,
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-accelerated-2d-canvas",
+      "--no-first-run",
+      "--no-zygote",
+      "--single-process",
+      "--disable-gpu"
+    ]
   }
 });
 
+// ===============================
+// EVENTOS DO WHATSAPP
+// ===============================
 client.on("qr", (qr) => {
   console.log("📲 Escaneie o QR Code abaixo:");
   qrcode.generate(qr, { small: true });
@@ -28,14 +51,21 @@ client.on("message", (msg) => {
   }
 });
 
+// ===============================
+// INICIALIZA WHATSAPP
+// ===============================
 client.initialize();
 
-// Servidor HTTP (obrigatório no Railway)
+// ===============================
+// ROTAS HTTP (RAILWAY)
+// ===============================
 app.get("/", (req, res) => {
   res.send("WhatsApp Delivery AI rodando 🚀");
 });
 
+// ===============================
+// START SERVER
+// ===============================
 app.listen(PORT, () => {
- console.log(`Servidor rodando na porta ${PORT}`);
-
+  console.log(`🌐 Servidor rodando na porta ${PORT}`);
 });
