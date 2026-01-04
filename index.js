@@ -1,12 +1,15 @@
 import express from "express";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
+// rota raiz obrigatória
 app.get("/", (req, res) => {
-  res.send("🚀 WhatsApp Delivery AI rodando");
+  res.status(200).send("🚀 WhatsApp Delivery AI ONLINE");
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+// PORTA (Railway ou Local)
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log("Servidor rodando na porta", PORT);
 });
