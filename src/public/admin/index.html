@@ -1,1 +1,309 @@
-<html><body><h1>🍕 ZapFacil - Admin</h1><p>Em construção</p></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0e17">
+<title>ZapFácil - Painel Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0c1117;--bg-card:#141b24;--bg-input:#0d1219;--border:#1e2a38;--accent:#ff6b35;--accent-dark:#e55a2b;--accent-light:#ff8c5a;--accent-glow:rgba(255,107,53,.15);--accent-glow-strong:rgba(255,107,53,.3);--green:#10b981;--green-glow:rgba(16,185,129,.15);--red:#ef4444;--red-glow:rgba(239,68,68,.15);--yellow:#f59e0b;--yellow-glow:rgba(245,158,11,.15);--blue:#3b82f6;--blue-glow:rgba(59,130,246,.15);--text:#e8edf5;--text-muted:#5c6b80;--text-dim:#344054;--sidebar-w:260px}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
+.sidebar{width:var(--sidebar-w);background:var(--bg-card);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;bottom:0;z-index:100}
+.sidebar-header{padding:24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px}
+.sidebar-logo{width:44px;height:44px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.sidebar-brand{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--accent-light),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar-sub{font-size:11px;color:var(--text-muted)}
+.nav{flex:1;padding:16px 12px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;cursor:pointer;transition:all .2s;color:var(--text-muted);font-size:14px;font-weight:500;margin-bottom:4px}
+.nav-item:hover{background:rgba(255,107,53,.05);color:var(--text)}
+.nav-item.active{background:rgba(255,107,53,.1);color:var(--accent);font-weight:600}
+.nav-item .icon{width:20px;text-align:center;font-size:16px}
+.nav-sep{padding:12px 16px;font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase}
+.sidebar-footer{padding:16px;border-top:1px solid var(--border)}
+.sidebar-footer .nm{font-size:13px;font-weight:600;margin-bottom:2px}
+.sidebar-footer .em{font-size:11px;color:var(--text-muted)}
+.btn-logout{width:100%;margin-top:12px;padding:10px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.15);border-radius:10px;color:#f87171;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-logout:hover{background:rgba(239,68,68,.15)}
+.main{margin-left:var(--sidebar-w);flex:1;padding:32px;min-height:100vh}
+.page{display:none}.page.active{display:block}
+.page-title{font-family:'Sora',sans-serif;font-size:28px;font-weight:700;margin-bottom:8px}
+.page-desc{color:var(--text-muted);font-size:14px;margin-bottom:32px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:24px}
+.card-title{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px}
+.stat-card .si{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px}
+.stat-card .sv{font-family:'Sora',sans-serif;font-size:26px;font-weight:700;margin-bottom:4px}
+.stat-card .sl{font-size:12px;color:var(--text-muted)}
+.wpp-box{display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap}
+.qr-container{width:280px;min-height:280px;background:white;border-radius:16px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.qr-container canvas,.qr-container img{max-width:260px!important;max-height:260px!important}
+.qr-ph{text-align:center;color:#666;padding:40px}
+.qr-ph .ic{font-size:48px;margin-bottom:12px}
+.qr-ph p{font-size:14px}
+.wpp-info{flex:1;min-width:280px}
+.status-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;font-size:13px;font-weight:600;margin-bottom:20px}
+.status-badge.on{background:var(--green-glow);color:var(--green);border:1px solid rgba(16,185,129,.2)}
+.status-badge.off{background:var(--red-glow);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.status-badge.wait{background:var(--yellow-glow);color:var(--yellow);border:1px solid rgba(245,158,11,.2)}
+.sd{width:8px;height:8px;border-radius:50%}
+.status-badge.on .sd{background:var(--green);animation:pulse 2s infinite}
+.status-badge.off .sd{background:var(--red)}
+.status-badge.wait .sd{background:var(--yellow);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.wpp-num{font-size:16px;margin-bottom:16px;color:var(--text-muted)}
+.wpp-num strong{color:var(--text);font-size:20px}
+.btn{padding:12px 24px;border-radius:12px;border:none;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-p{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:white}
+.btn-p:hover{transform:translateY(-1px);box-shadow:0 8px 25px var(--accent-glow-strong)}
+.btn-d{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.2)}
+.btn-d:hover{background:rgba(239,68,68,.2)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.spinner-sm{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 16px;background:var(--bg-input);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;font-size:14px;transition:all .3s;outline:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.form-group textarea{resize:vertical;min-height:80px}
+.switch-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+.switch-row:last-child{border-bottom:none}
+.sw-label{font-size:14px;font-weight:500}
+.sw-desc{font-size:12px;color:var(--text-muted)}
+.switch{width:44px;height:24px;background:var(--border);border-radius:12px;position:relative;cursor:pointer;transition:background .3s}
+.switch.on{background:var(--accent)}
+.switch::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;background:white;border-radius:50%;transition:transform .3s}
+.switch.on::after{transform:translateX(20px)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+td{padding:14px 16px;font-size:14px;border-bottom:1px solid rgba(30,42,56,.5)}
+tr:hover td{background:rgba(255,107,53,.02)}
+.empty{text-align:center;padding:60px 20px;color:var(--text-muted)}
+.empty .ic{font-size:48px;margin-bottom:16px}
+.empty h3{font-size:18px;color:var(--text);margin-bottom:8px}
+.empty p{font-size:14px;max-width:300px;margin:0 auto}
+.toast{position:fixed;top:24px;right:24px;padding:16px 24px;border-radius:14px;font-size:14px;font-weight:500;z-index:9999;transform:translateX(400px);transition:transform .4s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;gap:10px}
+.toast.show{transform:translateX(0)}
+.toast-success{background:#065f46;border:1px solid #10b981;color:#a7f3d0}
+.toast-error{background:#7f1d1d;border:1px solid #ef4444;color:#fca5a5}
+@media(max-width:860px){.sidebar{display:none}.main{margin-left:0}.form-row{grid-template-columns:1fr}.wpp-box{flex-direction:column;align-items:center}}
+</style>
+</head>
+<body>
+<nav class="sidebar">
+<div class="sidebar-header"><div class="sidebar-logo">🍕</div><div><div class="sidebar-brand">ZapFácil</div><div class="sidebar-sub">Painel Admin</div></div></div>
+<div class="nav">
+<div class="nav-item active" onclick="irPara('dashboard',this)"><span class="icon">📊</span>Dashboard</div>
+<div class="nav-item" onclick="irPara('whatsapp',this)"><span class="icon">📱</span>WhatsApp</div>
+<div class="nav-sep">GESTÃO</div>
+<div class="nav-item" onclick="irPara('cardapio',this)"><span class="icon">📋</span>Cardápio</div>
+<div class="nav-item" onclick="irPara('pedidos',this)"><span class="icon">🛒</span>Pedidos</div>
+<div class="nav-item" onclick="irPara('entregadores',this)"><span class="icon">🛵</span>Entregadores</div>
+<div class="nav-sep">CONFIGURAÇÕES</div>
+<div class="nav-item" onclick="irPara('restaurante',this)"><span class="icon">🏪</span>Restaurante</div>
+</div>
+<div class="sidebar-footer">
+<div class="nm" id="adNome">Admin</div>
+<div class="em" id="adEmail">admin@email.com</div>
+<button class="btn-logout" onclick="logout()">🚪 Sair</button>
+</div>
+</nav>
+<div class="main">
+
+<!-- DASHBOARD -->
+<div class="page active" id="pg-dashboard">
+<h1 class="page-title">Dashboard</h1>
+<p class="page-desc">Visão geral do seu delivery</p>
+<div class="card-grid">
+<div class="stat-card"><div class="si" style="background:var(--accent-glow)">🛒</div><div class="sv" id="stPedidos">0</div><div class="sl">Pedidos Hoje</div></div>
+<div class="stat-card"><div class="si" style="background:var(--green-glow)">💰</div><div class="sv" id="stFat">R$ 0</div><div class="sl">Faturamento</div></div>
+<div class="stat-card"><div class="si" style="background:var(--blue-glow)">🛵</div><div class="sv" id="stEnt">0</div><div class="sl">Entregadores</div></div>
+<div class="stat-card"><div class="si" style="background:var(--yellow-glow)">📱</div><div class="sv" id="stWpp">--</div><div class="sl">WhatsApp</div></div>
+</div>
+<div class="card"><div class="card-title">🕐 Últimos Pedidos</div><div id="ultPedidos"><div class="empty"><div class="ic">🛒</div><h3>Nenhum pedido ainda</h3><p>Pedidos via WhatsApp aparecerão aqui.</p></div></div></div>
+</div>
+
+<!-- WHATSAPP -->
+<div class="page" id="pg-whatsapp">
+<h1 class="page-title">📱 WhatsApp</h1>
+<p class="page-desc">Conecte seu WhatsApp para receber pedidos</p>
+<div class="card">
+<div class="card-title">Conexão WhatsApp</div>
+<div class="wpp-box">
+<div class="qr-container" id="qrContainer">
+<div class="qr-ph" id="qrPh"><div class="ic">📱</div><p>Clique em "Conectar" para gerar o QR Code</p></div>
+<div id="qrCode" style="display:none"></div>
+</div>
+<div class="wpp-info">
+<div class="status-badge off" id="wBadge"><div class="sd"></div><span id="wText">Desconectado</span></div>
+<div class="wpp-num" id="wNum"></div>
+<p style="color:var(--text-muted);font-size:14px;margin-bottom:20px;line-height:1.6">Para conectar, escaneie o QR Code:<br><strong style="color:var(--text)">WhatsApp → Configurações → Aparelhos conectados → Conectar</strong></p>
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+<button class="btn btn-p" id="btnCon" onclick="wppConectar()">📱 Conectar WhatsApp</button>
+<button class="btn btn-d" id="btnDes" onclick="wppDesconectar()" style="display:none">🔌 Desconectar</button>
+</div>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="card-title">⚙️ Config do Bot</div>
+<div class="switch-row"><div><div class="sw-label">Atendimento Automático</div><div class="sw-desc">IA responde clientes automaticamente</div></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
+<div class="switch-row"><div><div class="sw-label">Notificar Cozinha</div><div class="sw-desc">Alertar novos pedidos na cozinha</div></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
+<div class="switch-row"><div><div class="sw-label">Enviar Rastreamento</div><div class="sw-desc">Link de rastreamento ao cliente</div></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
+</div>
+</div>
+
+<!-- CARDÁPIO -->
+<div class="page" id="pg-cardapio">
+<h1 class="page-title">📋 Cardápio</h1>
+<p class="page-desc">Gerencie os itens do seu menu</p>
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+<div class="card-title" style="margin:0">Itens</div>
+<button class="btn btn-p" onclick="document.getElementById('frmItem').style.display='block'">➕ Novo Item</button>
+</div>
+<div id="frmItem" style="display:none;margin-bottom:24px;padding:20px;background:var(--bg);border-radius:12px;border:1px solid var(--border)">
+<div class="form-row"><div class="form-group"><label>Nome</label><input id="iNome" placeholder="Ex: X-Burguer"/></div><div class="form-group"><label>Preço (R$)</label><input type="number" id="iPreco" placeholder="25.90" step="0.01"/></div></div>
+<div class="form-row"><div class="form-group"><label>Categoria</label><input id="iCat" placeholder="Lanches, Bebidas..."/></div><div class="form-group"><label>Estoque</label><input type="number" id="iEst" value="999"/></div></div>
+<div class="form-group"><label>Descrição</label><textarea id="iDesc" placeholder="Descrição..."></textarea></div>
+<div style="display:flex;gap:12px"><button class="btn btn-p" onclick="salvarItem()">💾 Salvar</button><button class="btn btn-d" onclick="document.getElementById('frmItem').style.display='none'">Cancelar</button></div>
+</div>
+<div id="listaCard"><div class="empty"><div class="ic">📋</div><h3>Cardápio vazio</h3><p>Adicione itens ao menu.</p></div></div>
+</div>
+</div>
+
+<!-- PEDIDOS -->
+<div class="page" id="pg-pedidos">
+<h1 class="page-title">🛒 Pedidos</h1>
+<p class="page-desc">Todos os pedidos do delivery</p>
+<div class="card"><div id="listaPed"><div class="empty"><div class="ic">🛒</div><h3>Nenhum pedido</h3><p>Pedidos aparecerão aqui.</p></div></div></div>
+</div>
+
+<!-- ENTREGADORES -->
+<div class="page" id="pg-entregadores">
+<h1 class="page-title">🛵 Entregadores</h1>
+<p class="page-desc">Gerencie sua equipe</p>
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+<div class="card-title" style="margin:0">Equipe</div>
+<button class="btn btn-p" onclick="document.getElementById('frmEnt').style.display='block'">➕ Novo</button>
+</div>
+<div id="frmEnt" style="display:none;margin-bottom:24px;padding:20px;background:var(--bg);border-radius:12px;border:1px solid var(--border)">
+<div class="form-row"><div class="form-group"><label>Nome</label><input id="eNome" placeholder="Nome completo"/></div><div class="form-group"><label>Telefone</label><input id="eTel" placeholder="(67) 99999-9999"/></div></div>
+<div class="form-row"><div class="form-group"><label>Veículo</label><select id="eVei"><option value="moto">🏍️ Moto</option><option value="bicicleta">🚲 Bicicleta</option><option value="carro">🚗 Carro</option></select></div><div class="form-group"><label>Placa</label><input id="ePlaca" placeholder="ABC-1234"/></div></div>
+<div style="display:flex;gap:12px"><button class="btn btn-p" onclick="salvarEnt()">💾 Salvar</button><button class="btn btn-d" onclick="document.getElementById('frmEnt').style.display='none'">Cancelar</button></div>
+</div>
+<div id="listaEnt"><div class="empty"><div class="ic">🛵</div><h3>Nenhum entregador</h3></div></div>
+</div>
+</div>
+
+<!-- RESTAURANTE -->
+<div class="page" id="pg-restaurante">
+<h1 class="page-title">🏪 Restaurante</h1>
+<p class="page-desc">Configure seu estabelecimento</p>
+<div class="card">
+<div class="card-title">Informações</div>
+<div class="form-row"><div class="form-group"><label>Nome</label><input id="rNome" placeholder="Nome do restaurante"/></div><div class="form-group"><label>Telefone</label><input id="rTel" placeholder="(67) 3333-4444"/></div></div>
+<div class="form-group"><label>Endereço</label><input id="rEnd" placeholder="Rua, número, bairro"/></div>
+<div class="form-row"><div class="form-group"><label>Taxa Entrega (R$)</label><input type="number" id="rTaxa" placeholder="5.00" step="0.5"/></div><div class="form-group"><label>Tempo Médio (min)</label><input type="number" id="rTempo" placeholder="30"/></div></div>
+<div class="form-row"><div class="form-group"><label>Abre</label><input type="time" id="rAbre" value="08:00"/></div><div class="form-group"><label>Fecha</label><input type="time" id="rFecha" value="23:00"/></div></div>
+<button class="btn btn-p" onclick="salvarRest()">💾 Salvar</button>
+</div>
+</div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+let token=localStorage.getItem('token'),admin=JSON.parse(localStorage.getItem('admin')||'{}'),wppInterval=null;
+if(!token)window.location.href='/login';
+document.getElementById('adNome').textContent=admin.nome||'Admin';
+document.getElementById('adEmail').textContent=admin.email||'';
+
+function irPara(p,el){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));document.getElementById('pg-'+p).classList.add('active');if(el)el.classList.add('active');if(p==='whatsapp')checkWpp();if(p==='cardapio')loadCard();if(p==='entregadores')loadEnt();if(p==='restaurante')loadRest()}
+function logout(){localStorage.clear();window.location.href='/login'}
+function toast(m,t='success'){const e=document.getElementById('toast');e.className='toast toast-'+t+' show';e.innerHTML=(t==='success'?'✅ ':'❌ ')+m;setTimeout(()=>e.classList.remove('show'),3000)}
+
+// WHATSAPP
+async function checkWpp(){
+  try{const r=await fetch('/api/whatsapp/status');const d=await r.json();updWpp(d)}catch(e){}
+}
+function updWpp(d){
+  const b=document.getElementById('wBadge'),t=document.getElementById('wText'),n=document.getElementById('wNum'),bc=document.getElementById('btnCon'),bd=document.getElementById('btnDes'),qr=document.getElementById('qrCode'),ph=document.getElementById('qrPh'),sw=document.getElementById('stWpp');
+  if(d.status==='conectado'){
+    b.className='status-badge on';t.textContent='Conectado';n.innerHTML='Número: <strong>+'+d.numero+'</strong>';
+    bc.style.display='none';bd.style.display='inline-flex';qr.style.display='none';
+    ph.style.display='block';ph.innerHTML='<div class="ic">✅</div><p style="color:#10b981;font-weight:600">Conectado!</p>';
+    sw.textContent='🟢 Online';if(wppInterval){clearInterval(wppInterval);wppInterval=null}
+  }else if(d.status==='aguardando_qr'&&d.qrCode){
+    b.className='status-badge wait';t.textContent='Aguardando QR';n.innerHTML='';
+    bc.style.display='none';bd.style.display='inline-flex';ph.style.display='none';
+    qr.style.display='flex';qr.innerHTML='';new QRCode(qr,{text:d.qrCode,width:256,height:256,colorDark:'#000',colorLight:'#fff'});
+    sw.textContent='🟡 QR Code';
+  }else{
+    b.className='status-badge off';t.textContent='Desconectado';n.innerHTML='';
+    bc.style.display='inline-flex';bd.style.display='none';qr.style.display='none';
+    ph.style.display='block';ph.innerHTML='<div class="ic">📱</div><p>Clique em "Conectar"</p>';
+    sw.textContent='🔴 Offline';
+  }
+}
+async function wppConectar(){
+  const b=document.getElementById('btnCon');b.disabled=true;b.innerHTML='<div class="spinner-sm"></div> Conectando...';
+  try{const r=await fetch('/api/whatsapp/conectar',{method:'POST'});const d=await r.json();if(d.sucesso){updWpp(d.status);toast('Escaneie o QR Code!');if(!wppInterval)wppInterval=setInterval(checkWpp,3000)}else toast(d.erro||'Erro','error')}catch(e){toast('Erro conexão','error')}
+  b.disabled=false;b.innerHTML='📱 Conectar WhatsApp';
+}
+async function wppDesconectar(){
+  if(!confirm('Desconectar WhatsApp?'))return;
+  try{await fetch('/api/whatsapp/desconectar',{method:'POST'});toast('Desconectado!');checkWpp()}catch(e){toast('Erro','error')}
+}
+
+// CARDÁPIO
+async function salvarItem(){
+  const item={adminId:admin.id,nome:document.getElementById('iNome').value,preco:parseFloat(document.getElementById('iPreco').value),categoria:document.getElementById('iCat').value||'Geral',estoque:parseInt(document.getElementById('iEst').value)||999,descricao:document.getElementById('iDesc').value};
+  if(!item.nome||!item.preco){toast('Preencha nome e preço!','error');return}
+  try{const r=await fetch('/api/cardapio',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(item)});const d=await r.json();if(d.sucesso){toast('Item adicionado!');document.getElementById('frmItem').style.display='none';document.getElementById('iNome').value='';document.getElementById('iPreco').value='';document.getElementById('iDesc').value='';loadCard()}}catch(e){toast('Erro','error')}
+}
+async function loadCard(){
+  if(!admin.id)return;
+  try{const r=await fetch('/api/cardapio/'+admin.id);const it=await r.json();const d=document.getElementById('listaCard');
+  if(!it.length){d.innerHTML='<div class="empty"><div class="ic">📋</div><h3>Cardápio vazio</h3></div>';return}
+  let h='<div class="table-wrap"><table><tr><th>Produto</th><th>Categoria</th><th>Preço</th><th>Estoque</th><th>Ações</th></tr>';
+  it.forEach(i=>{h+='<tr><td><strong>'+i.nome+'</strong><br><small style="color:var(--text-muted)">'+(i.descricao||'')+'</small></td><td>'+i.categoria+'</td><td style="color:var(--green);font-weight:600">R$ '+i.preco.toFixed(2)+'</td><td>'+i.estoque+'</td><td><button class="btn btn-d" style="padding:6px 12px;font-size:12px" onclick="delItem(\''+i._id+'\')">🗑️</button></td></tr>'});
+  h+='</table></div>';d.innerHTML=h}catch(e){}
+}
+async function delItem(id){if(!confirm('Remover?'))return;await fetch('/api/cardapio/'+id,{method:'DELETE'});toast('Removido!');loadCard()}
+
+// ENTREGADORES
+async function salvarEnt(){
+  const e={adminId:admin.id,nome:document.getElementById('eNome').value,telefone:document.getElementById('eTel').value,veiculo:document.getElementById('eVei').value,placa:document.getElementById('ePlaca').value};
+  if(!e.nome||!e.telefone){toast('Preencha nome e telefone!','error');return}
+  try{const r=await fetch('/api/entregadores',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(e)});const d=await r.json();if(d.sucesso){toast('Entregador adicionado!');document.getElementById('frmEnt').style.display='none';loadEnt()}}catch(e){toast('Erro','error')}
+}
+async function loadEnt(){
+  if(!admin.id)return;
+  try{const r=await fetch('/api/entregadores/'+admin.id);const l=await r.json();const d=document.getElementById('listaEnt');
+  if(!l.length){d.innerHTML='<div class="empty"><div class="ic">🛵</div><h3>Nenhum entregador</h3></div>';return}
+  let h='<div class="table-wrap"><table><tr><th>Nome</th><th>Telefone</th><th>Veículo</th><th>Status</th></tr>';
+  l.forEach(e=>{const c={disponivel:'var(--green)',em_entrega:'var(--yellow)',offline:'var(--text-dim)'};h+='<tr><td><strong>'+e.nome+'</strong></td><td>'+e.telefone+'</td><td>'+e.veiculo+' '+(e.placa||'')+'</td><td style="color:'+(c[e.status]||'var(--text-dim)')+';font-weight:600">'+e.status+'</td></tr>'});
+  h+='</table></div>';d.innerHTML=h}catch(e){}
+}
+
+// RESTAURANTE
+async function loadRest(){
+  if(!admin.id)return;
+  try{const r=await fetch('/api/config/'+admin.id);const d=await r.json();if(d?.restaurante){document.getElementById('rNome').value=d.restaurante.nome||'';document.getElementById('rTel').value=d.restaurante.telefone||'';document.getElementById('rEnd').value=d.restaurante.endereco||'';document.getElementById('rTaxa').value=d.restaurante.taxaEntrega||5;document.getElementById('rTempo').value=d.restaurante.tempoMedio||30;document.getElementById('rAbre').value=d.restaurante.horarioAbre||'08:00';document.getElementById('rFecha').value=d.restaurante.horarioFecha||'23:00'}}catch(e){}
+}
+async function salvarRest(){
+  const rest={restaurante:{nome:document.getElementById('rNome').value,telefone:document.getElementById('rTel').value,endereco:document.getElementById('rEnd').value,taxaEntrega:parseFloat(document.getElementById('rTaxa').value)||5,tempoMedio:parseInt(document.getElementById('rTempo').value)||30,horarioAbre:document.getElementById('rAbre').value,horarioFecha:document.getElementById('rFecha').value}};
+  try{const r=await fetch('/api/config/'+admin.id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(rest)});const d=await r.json();if(d.sucesso)toast('Salvo!');else toast('Erro','error')}catch(e){toast('Erro','error')}
+}
+
+checkWpp();
+</script>
+</body>
+</html>

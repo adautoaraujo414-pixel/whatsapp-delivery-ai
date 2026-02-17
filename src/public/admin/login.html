@@ -1,1 +1,140 @@
-<html><body><h1>🍕 ZapFacil - Login</h1><p>Em construção</p></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0e17">
+<title>ZapFácil Delivery - Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0c1117;--bg-input:#0d1219;--border:#1e2a38;--border-focus:#ff6b35;--accent:#ff6b35;--accent-dark:#e55a2b;--accent-light:#ff8c5a;--accent-glow:rgba(255,107,53,.2);--accent-glow-strong:rgba(255,107,53,.35);--red-glow:rgba(239,68,68,.15);--green:#10b981;--text:#e8edf5;--text-muted:#5c6b80;--text-dim:#344054}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;overflow:hidden}
+.bg-effects{position:fixed;inset:0;z-index:0;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(80px)}
+.orb-1{width:500px;height:500px;background:radial-gradient(circle,rgba(255,107,53,.08),transparent 70%);top:-15%;right:-5%;animation:o1 20s ease-in-out infinite}
+.orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(255,107,53,.05),transparent 70%);bottom:-10%;left:-5%;animation:o2 25s ease-in-out infinite}
+@keyframes o1{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,30px)}}
+@keyframes o2{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-20px)}}
+.dot-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(rgba(255,107,53,.04) 1px,transparent 1px);background-size:40px 40px}
+.left-panel{flex:1;display:flex;flex-direction:column;justify-content:center;padding:60px 80px;position:relative;z-index:1}
+.brand-wrap{max-width:520px;animation:brandIn 1s cubic-bezier(.16,1,.3,1) both}
+@keyframes brandIn{from{opacity:0;transform:translateX(-50px)}to{opacity:1;transform:translateX(0)}}
+.logo-row{display:flex;align-items:center;gap:18px;margin-bottom:48px}
+.logo-icon{width:68px;height:68px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:34px;box-shadow:0 12px 40px var(--accent-glow-strong);animation:lp 3.5s ease-in-out infinite;flex-shrink:0}
+@keyframes lp{0%,100%{box-shadow:0 12px 40px var(--accent-glow)}50%{box-shadow:0 16px 60px var(--accent-glow-strong)}}
+.logo-text{font-family:'Sora',sans-serif;font-size:36px;font-weight:800;background:linear-gradient(135deg,var(--accent-light),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-title{font-family:'Sora',sans-serif;font-size:42px;font-weight:700;line-height:1.15;letter-spacing:-1.5px;margin-bottom:16px}
+.hero-title .hl{position:relative;display:inline-block}
+.hero-title .hl::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:8px;background:var(--accent-glow-strong);border-radius:4px;z-index:-1}
+.hero-sub{font-size:17px;color:var(--text-muted);line-height:1.7;font-weight:300;margin-bottom:50px;max-width:440px}
+.stats-row{display:flex;gap:32px;margin-bottom:50px}
+.stat-item{opacity:0;animation:si .6s both}
+.stat-item:nth-child(1){animation-delay:.5s}.stat-item:nth-child(2){animation-delay:.65s}.stat-item:nth-child(3){animation-delay:.8s}
+@keyframes si{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+.stat-number{font-family:'Sora',sans-serif;font-size:28px;font-weight:700;color:var(--accent-light);margin-bottom:4px}
+.stat-label{font-size:13px;color:var(--text-muted)}
+.feature-list{display:flex;flex-direction:column;gap:16px}
+.feat{display:flex;align-items:center;gap:14px;opacity:0;animation:fi .5s both}
+.feat:nth-child(1){animation-delay:.9s}.feat:nth-child(2){animation-delay:1s}.feat:nth-child(3){animation-delay:1.1s}.feat:nth-child(4){animation-delay:1.2s}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.feat-icon{width:36px;height:36px;border-radius:10px;background:rgba(255,107,53,.08);border:1px solid rgba(255,107,53,.12);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.feat-text{font-size:14px;color:var(--text-muted)}.feat-text strong{color:var(--text);font-weight:600}
+.right-panel{width:500px;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px;position:relative;z-index:1;background:rgba(20,27,36,.5);backdrop-filter:blur(50px);border-left:1px solid var(--border)}
+.login-box{width:100%;max-width:380px;animation:li .9s .15s cubic-bezier(.16,1,.3,1) both}
+@keyframes li{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+.mobile-logo{display:none;text-align:center;margin-bottom:36px}
+.mobile-logo .logo-icon-sm{width:56px;height:56px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 8px 30px var(--accent-glow);margin-bottom:12px}
+.mobile-logo h2{font-family:'Sora',sans-serif;font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--accent-light),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mobile-logo p{color:var(--text-muted);font-size:13px;margin-top:4px}
+.login-header{margin-bottom:36px}
+.admin-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,107,53,.06);border:1px solid rgba(255,107,53,.12);border-radius:100px;padding:5px 14px;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px}
+.login-header h1{font-family:'Sora',sans-serif;font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:8px}
+.login-header p{color:var(--text-muted);font-size:14px;line-height:1.5}
+.alert{display:none;padding:14px 16px;border-radius:12px;font-size:13px;font-weight:500;margin-bottom:20px;gap:10px;align-items:center}
+.alert-error{background:var(--red-glow);border:1px solid rgba(239,68,68,.2);color:#f87171}
+.alert-success{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:#34d399}
+.alert.show{display:flex;animation:ash .45s ease}
+@keyframes ash{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(2px)}}
+.form-group{margin-bottom:22px}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);letter-spacing:.8px;text-transform:uppercase;margin-bottom:9px}
+.input-wrap{position:relative}
+.input-wrap .ico{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-dim);transition:color .3s;pointer-events:none;display:flex}
+.input-wrap .ico svg{width:18px;height:18px}
+.input-wrap input{width:100%;padding:15px 16px 15px 48px;background:var(--bg-input);border:1.5px solid var(--border);border-radius:14px;color:var(--text);font-family:'Outfit',sans-serif;font-size:15px;transition:all .3s;outline:none}
+.input-wrap input::placeholder{color:var(--text-dim)}
+.input-wrap input:focus{border-color:var(--border-focus);box-shadow:0 0 0 4px var(--accent-glow)}
+.input-wrap:focus-within .ico{color:var(--accent)}
+.tabs{display:flex;margin-bottom:28px;background:var(--bg-input);border-radius:12px;padding:4px;border:1px solid var(--border)}
+.tab{flex:1;padding:10px;text-align:center;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;border-radius:9px;transition:all .3s}
+.tab.active{background:var(--accent);color:white}
+.btn-entrar{width:100%;padding:16px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));border:none;border-radius:14px;color:white;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.btn-entrar:hover{transform:translateY(-2px);box-shadow:0 10px 35px var(--accent-glow-strong)}
+.btn-entrar:disabled{opacity:.55;cursor:not-allowed;transform:none!important}
+.btn-entrar .spinner{display:none;width:22px;height:22px;border:2.5px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .6s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.login-footer{text-align:center;margin-top:28px}
+.login-footer p{font-size:12px;color:var(--text-dim)}
+.version{text-align:center;margin-top:36px;font-size:11px;color:var(--text-dim);display:flex;align-items:center;justify-content:center;gap:6px}
+.version .dot{width:4px;height:4px;border-radius:50%;background:var(--accent);opacity:.5}
+#formRegistro{display:none}
+@media(max-width:860px){body{flex-direction:column}.left-panel{display:none}.right-panel{width:100%;border-left:none;background:var(--bg);padding:30px 24px}.mobile-logo{display:block}.login-box{max-width:420px}}
+</style>
+</head>
+<body>
+<div class="bg-effects"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+<div class="dot-grid"></div>
+<div class="left-panel"><div class="brand-wrap">
+<div class="logo-row"><div class="logo-icon">🍕</div><div class="logo-text">ZapFácil</div></div>
+<h1 class="hero-title">Seu delivery<br>no <span class="hl">WhatsApp</span></h1>
+<p class="hero-sub">Plataforma completa para gerenciar pedidos, cardápio, entregadores e atendimento automático via WhatsApp com IA.</p>
+<div class="stats-row">
+<div class="stat-item"><div class="stat-number">24/7</div><div class="stat-label">Atendimento IA</div></div>
+<div class="stat-item"><div class="stat-number">100%</div><div class="stat-label">Automatizado</div></div>
+<div class="stat-item"><div class="stat-number">Real-time</div><div class="stat-label">Pedidos ao vivo</div></div>
+</div>
+<div class="feature-list">
+<div class="feat"><div class="feat-icon">🤖</div><div class="feat-text"><strong>IA Atendente</strong> — Recebe pedidos pelo WhatsApp</div></div>
+<div class="feat"><div class="feat-icon">🍳</div><div class="feat-text"><strong>Tela da Cozinha</strong> — Aceite pedidos em tempo real</div></div>
+<div class="feat"><div class="feat-icon">🛵</div><div class="feat-text"><strong>Entregadores</strong> — Rastreamento e gestão</div></div>
+<div class="feat"><div class="feat-icon">📊</div><div class="feat-text"><strong>Estoque</strong> — Controle automático</div></div>
+</div>
+</div></div>
+<div class="right-panel"><div class="login-box">
+<div class="mobile-logo"><div class="logo-icon-sm">🍕</div><h2>ZapFácil</h2><p>Delivery Inteligente</p></div>
+<div class="login-header">
+<div class="admin-badge">🍕 PAINEL DO RESTAURANTE</div>
+<h1 id="headerTitle">Acesse seu Painel</h1>
+<p id="headerDesc">Faça login para gerenciar seu delivery</p>
+</div>
+<div class="tabs">
+<div class="tab active" onclick="trocarTab('login')">ENTRAR</div>
+<div class="tab" onclick="trocarTab('registro')">CRIAR CONTA</div>
+</div>
+<div class="alert alert-error" id="alertErro"><span>⚠️</span><span id="alertTexto"></span></div>
+<div class="alert alert-success" id="alertSucesso"><span>✅</span><span id="alertTextoS"></span></div>
+<form id="formLogin" onsubmit="fazerLogin(event)" novalidate>
+<div class="form-group"><label>Email</label><div class="input-wrap"><input type="email" id="loginEmail" placeholder="seu@email.com" required/><div class="ico"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div></div></div>
+<div class="form-group"><label>Senha</label><div class="input-wrap"><input type="password" id="loginSenha" placeholder="Sua senha" required/><div class="ico"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div></div>
+<button type="submit" class="btn-entrar" id="btnLogin"><span class="btn-txt">ENTRAR</span><div class="spinner" id="spLogin"></div></button>
+</form>
+<form id="formRegistro" onsubmit="fazerRegistro(event)" novalidate>
+<div class="form-group"><label>Nome</label><div class="input-wrap"><input type="text" id="regNome" placeholder="Seu nome" required/><div class="ico"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div></div></div>
+<div class="form-group"><label>Email</label><div class="input-wrap"><input type="email" id="regEmail" placeholder="seu@email.com" required/><div class="ico"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div></div></div>
+<div class="form-group"><label>Telefone</label><div class="input-wrap"><input type="tel" id="regTel" placeholder="(67) 99999-9999" required/><div class="ico"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div></div></div>
+<div class="form-group"><label>Senha</label><div class="input-wrap"><input type="password" id="regSenha" placeholder="Mínimo 6 caracteres" required/><div class="ico"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div></div>
+<button type="submit" class="btn-entrar" id="btnReg"><span class="btn-txt">CRIAR CONTA</span><div class="spinner" id="spReg"></div></button>
+</form>
+<div class="login-footer"><p>Ao criar conta você aceita os termos de uso.</p></div>
+<div class="version"><span class="dot"></span>ZapFácil v1.0.0<span class="dot"></span></div>
+</div></div>
+<script>
+function trocarTab(t){document.querySelectorAll('.tab').forEach((e,i)=>e.classList.toggle('active',i===(t==='login'?0:1)));document.getElementById('formLogin').style.display=t==='login'?'block':'none';document.getElementById('formRegistro').style.display=t==='registro'?'block':'none';document.getElementById('headerTitle').textContent=t==='login'?'Acesse seu Painel':'Crie sua Conta';document.getElementById('headerDesc').textContent=t==='login'?'Faça login para gerenciar seu delivery':'Cadastre seu restaurante em segundos';document.getElementById('alertErro').classList.remove('show');document.getElementById('alertSucesso').classList.remove('show')}
+function mostrarErro(m){const e=document.getElementById('alertErro');document.getElementById('alertTexto').textContent=m;e.classList.remove('show');void e.offsetWidth;e.classList.add('show');document.getElementById('alertSucesso').classList.remove('show')}
+function mostrarSucesso(m){const e=document.getElementById('alertSucesso');document.getElementById('alertTextoS').textContent=m;e.classList.remove('show');void e.offsetWidth;e.classList.add('show');document.getElementById('alertErro').classList.remove('show')}
+async function fazerLogin(e){e.preventDefault();const email=document.getElementById('loginEmail').value.trim(),senha=document.getElementById('loginSenha').value;if(!email||!senha){mostrarErro('Preencha todos os campos.');return}const btn=document.getElementById('btnLogin'),txt=btn.querySelector('.btn-txt'),sp=document.getElementById('spLogin');btn.disabled=true;txt.style.display='none';sp.style.display='block';try{const r=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,senha})});const d=await r.json();if(d.sucesso||d.token){localStorage.setItem('token',d.token);localStorage.setItem('admin',JSON.stringify(d.admin||{}));btn.style.background='linear-gradient(135deg,#10b981,#059669)';txt.textContent='✅ ENTRANDO...';txt.style.display='inline';sp.style.display='none';setTimeout(()=>window.location.href='/admin',600)}else{mostrarErro(d.erro||'Credenciais inválidas.');btn.disabled=false;txt.style.display='inline';sp.style.display='none'}}catch(err){mostrarErro('Erro de conexão.');btn.disabled=false;txt.style.display='inline';sp.style.display='none'}}
+async function fazerRegistro(e){e.preventDefault();const nome=document.getElementById('regNome').value.trim(),email=document.getElementById('regEmail').value.trim(),telefone=document.getElementById('regTel').value.trim(),senha=document.getElementById('regSenha').value;if(!nome||!email||!senha){mostrarErro('Preencha todos os campos.');return}if(senha.length<6){mostrarErro('Senha mínimo 6 caracteres.');return}const btn=document.getElementById('btnReg'),txt=btn.querySelector('.btn-txt'),sp=document.getElementById('spReg');btn.disabled=true;txt.style.display='none';sp.style.display='block';try{const r=await fetch('/api/auth/registro',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome,email,telefone,senha})});const d=await r.json();if(d.sucesso||d.token){localStorage.setItem('token',d.token);localStorage.setItem('admin',JSON.stringify(d.admin||{}));btn.style.background='linear-gradient(135deg,#10b981,#059669)';txt.textContent='✅ CONTA CRIADA!';txt.style.display='inline';sp.style.display='none';setTimeout(()=>window.location.href='/admin',600)}else{mostrarErro(d.erro||'Erro ao criar.');btn.disabled=false;txt.style.display='inline';sp.style.display='none'}}catch(err){mostrarErro('Erro de conexão.');btn.disabled=false;txt.style.display='inline';sp.style.display='none'}}
+(function(){if(localStorage.getItem('token'))window.location.href='/admin'})();
+</script>
+</body>
+</html>
