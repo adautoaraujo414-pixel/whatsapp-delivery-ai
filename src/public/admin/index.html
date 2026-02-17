@@ -243,7 +243,7 @@ function updWpp(d){
   }else if(d.status==='aguardando_qr'&&d.qrCode){
     b.className='status-badge wait';t.textContent='Aguardando QR';n.innerHTML='';
     bc.style.display='none';bd.style.display='inline-flex';ph.style.display='none';
-    qr.style.display='flex';qr.innerHTML='';new QRCode(qr,{text:d.qrCode,width:256,height:256,colorDark:'#000',colorLight:'#fff'});
+    qr.style.display="flex";qr.innerHTML="";if(d.qrCode.startsWith("data:")){var img=document.createElement("img");img.src=d.qrCode;img.style.maxWidth="260px";qr.appendChild(img)}else{new QRCode(qr,{text:d.qrCode,width:256,height:256,colorDark:"#000",colorLight:"#fff"})}
     sw.textContent='🟡 QR Code';
   }else{
     b.className='status-badge off';t.textContent='Desconectado';n.innerHTML='';
